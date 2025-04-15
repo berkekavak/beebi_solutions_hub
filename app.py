@@ -740,43 +740,43 @@ def image_attribute_prediction_page():
                 image = Image.open(image_paths[index])
                 st.image(image, caption=os.path.basename(image_paths[index]))
                 
-                with st.spinner("Predicting attributes..."):
-                    model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
-                    processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
-                    
-                    attributes = {
-                        "Product Type": ["T-shirt", "Hoodie", "Sweatshirt", "Jacket", "Pants", "Shorts", "Shoes", "Hat", "Bag"],
-                        "Illustration Type": ["Product Drawing or Sketch", "Product Photo"],
-                        "Color": ["Red", "Blue", "Black", "White", "Green", "Pink", "Yellow", "Purple", "Orange", "Brown", "Gray", "Beige", "Claret Red", "Multicolor"],
-                        "Collar Type": ["Round neck", "V-neck", "Polo collar", "Turtleneck", "Buttoned collar"],
-                        "Material": ["Cotton", "Polyester", "Blended fabric"],
-                        "Sleeve Length": ["Short sleeves", "Long sleeves", "Sleeveless"],
-                        "Lining": ["Unlined", "Partially lined", "Fully lined"],
-                        "Pocket Type": ["Zipper", "Flap", "Patch", "Slit", "None"],
-                        "Shoe Material": ["Leather", "Mesh", "Knit", "Suede", "Canvas", "Rubber", "Ethylene Vinyl Acetate", "Recycled Materials"],
-                        "Logo Type": ["adidas Originals (Trefoil) Logo", "adidas Performance (Three Stripes) Logo", "No Logo"]
-                    }
-                    
-                    def get_best_match(category, options, image):
-                        inputs = processor(text=options, images=image, return_tensors="pt", padding=True)
-                        with torch.no_grad():
-                            outputs = model(**inputs)
-                            logits_per_image = outputs.logits_per_image
-                            probs = logits_per_image.softmax(dim=1).squeeze()
-                        probs = probs if isinstance(probs, torch.Tensor) else torch.tensor([probs])
-                        best_match_idx = probs.argmax().item()
-                        return options[best_match_idx], dict(zip(options, probs.tolist()))
-                    
-                    st.header("Image Attributes")
-                    probabilities = {}
-                    for category in attributes.keys():
-                        value, probs = get_best_match(category, attributes[category], image)
-                        st.write(f"**{category}:** {value}")
-                        probabilities[category] = probs
-                    
-                    with st.expander("Show All Probabilities"):
-                        for category, probs in probabilities.items():
-                            st.write(f"**{category} Probabilities:** {json.dumps(probs, indent=4)}")
+                if clip_model is None or clip_processor is None:
+                    st.warning("CLIP model is unavailable. Attribute prediction is disabled.")
+                else:
+                    with st.spinner("Predicting attributes..."):
+                        attributes = {
+                            "Product Type": ["T-shirt", "Hoodie", "Sweatshirt", "Jacket", "Pants", "Shorts", "Shoes", "Hat", "Bag"],
+                            "Illustration Type": ["Product Drawing or Sketch", "Product Photo"],
+                            "Color": ["Red", "Blue", "Black", "White", "Green", "Pink", "Yellow", "Purple", "Orange", "Brown", "Gray", "Beige", "Claret Red", "Multicolor"],
+                            "Collar Type": ["Round neck", "V-neck", "Polo collar", "Turtleneck", "Buttoned collar"],
+                            "Material": ["Cotton", "Polyester", "Blended fabric"],
+                            "Sleeve Length": ["Short sleeves", "Long sleeves", "Sleeveless"],
+                            "Lining": ["Unlined", "Partially lined", "Fully lined"],
+                            "Pocket Type": ["Zipper", "Flap", "Patch", "Slit", "None"],
+                            "Shoe Material": ["Leather", "Mesh", "Knit", "Suede", "Canvas", "Rubber", "Ethylene Vinyl Acetate", "Recycled Materials"],
+                            "Logo Type": ["adidas Originals (Trefoil) Logo", "adidas Performance (Three Stripes) Logo", "No Logo"]
+                        }
+                        
+                        def get_best_match(category, options, image):
+                            inputs = clip_processor(text=options, images=image, return_tensors="pt", padding=True)
+                            with torch.no_grad():
+                                outputs = clip_model(**inputs)
+                                logits_per_image = outputs.logits_per_image
+                                probs = logits_per_image.softmax(dim=1).squeeze()
+                            probs = probs if isinstance(probs, torch.Tensor) else torch.tensor([probs])
+                            best_match_idx = probs.argmax().item()
+                            return options[best_match_idx], dict(zip(options, probs.tolist()))
+                        
+                        st.header("Image Attributes")
+                        probabilities = {}
+                        for category in attributes.keys():
+                            value, probs = get_best_match(category, attributes[category], image)
+                            st.write(f"**{category}:** {value}")
+                            probabilities[category] = probs
+                        
+                        with st.expander("Show All Probabilities"):
+                            for category, probs in probabilities.items():
+                                st.write(f"**{category} Probabilities:** {json.dumps(probs, indent=4)}")
                 
                 col1, col2 = st.columns([1, 1])
                 with col1:
