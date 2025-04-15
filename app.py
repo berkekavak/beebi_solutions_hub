@@ -15,13 +15,6 @@ import ctypes
 # Set page config as the first Streamlit command
 st.set_page_config(layout="wide")
 
-# Diagnostic: Check for libGL.so.1
-try:
-    ctypes.CDLL("libGL.so.1")
-    st.write("libGL.so.1 found successfully!")
-except OSError as e:
-    st.error(f"Failed to load libGL.so.1: {e}")
-
 # Load CLIP model and processor
 try:
     @st.cache_resource
