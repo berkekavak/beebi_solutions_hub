@@ -12,6 +12,9 @@ from streamlit_carousel import carousel
 import base64
 import ctypes
 
+# Set page config as the first Streamlit command
+st.set_page_config(layout="wide")
+
 # Diagnostic: Check for libGL.so.1
 try:
     ctypes.CDLL("libGL.so.1")
@@ -21,7 +24,6 @@ except OSError as e:
 
 # Load CLIP model and processor
 try:
-    from transformers import CLIPProcessor, CLIPModel
     @st.cache_resource
     def load_clip_model():
         model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
@@ -40,9 +42,6 @@ def get_base64_image(image_path):
 # Convert the logo image to base64
 logo_base64 = get_base64_image("images/BeeBI-Logo-Orj.png")
 
-# Set page config to wide layout to utilize more width
-st.set_page_config(layout="wide")
-
 # Function for extracting images from PPTX
 def extract_images_from_pptx(pptx_path, output_folder):
     os.makedirs(output_folder, exist_ok=True)
@@ -59,8 +58,7 @@ def extract_images_from_pptx(pptx_path, output_folder):
                 img_count += 1
     return output_folder
 
-# CSS and header (unchanged)
-# Updated CSS and header with centered logo and dynamic title
+# CSS and header
 st.markdown(f"""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
@@ -81,23 +79,23 @@ body, html, * {{
     padding: 10px 20px;
     display: flex;
     align-items: center;
-    justify-content: center; /* Center the entire header content */
+    justify-content: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     height: 60px;
 }}
 .fixed-header .logo-container {{
-    position: absolute; /* Center the logo absolutely within the header */
+    position: absolute;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1001;
 }}
 .fixed-header .logo-container img {{
-    height: 50px; /* Adjust the height of the logo image */
+    height: 50px;
     vertical-align: middle;
 }}
 .fixed-header .header-title-container {{
-    position: absolute; /* Position the title below the logo */
-    top: 50px; /* Adjust based on header height and logo size */
+    position: absolute;
+    top: 50px;
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
@@ -114,10 +112,10 @@ body, html, * {{
 }}
 /* Adjust the app padding to account for the header */
 .stApp {{
-    padding-top: 100px; /* Increased padding to account for header and title */
+    padding-top: 100px;
     background-color: #f7f9fe;
 }}
-/* Center the main page title (Streamlit's default title) */
+/* Center the main page title */
 div[data-testid="stMarkdownContainer"] h1:not(.solution-title),
 div[data-testid="stMarkdownContainer"] h2:not(.solution-title) {{
     font-family: 'Poppins', Arial, sans-serif !important;
@@ -126,19 +124,18 @@ div[data-testid="stMarkdownContainer"] h2:not(.solution-title) {{
     text-align: center !important;
     width: 100%;
 }}
-/* Ensure all markdown text (body text) uses Poppins and has readable color */
+/* Ensure all markdown text uses Poppins */
 div[data-testid="stMarkdownContainer"] p,
 div[data-testid="stMarkdownContainer"] {{
     font-family: 'Poppins', Arial, sans-serif !important;
     color: #333333;
 }}
-/* Ensure solution page body text uses Poppins and has readable color */
 .solution-content p {{
     font-family: 'Poppins', Arial, sans-serif !important;
     font-size: 1em;
     color: #333333;
     line-height: 1.6;
-    margin: 20 0 0 0px;
+    margin: 20px 0 0 0;
     width: 130%;
 }}
 .solution-content h3 {{
@@ -170,7 +167,7 @@ h1.solution-title {{
     max-width: 1024px;
 }}
 .solution-text {{
-    width: 70%; 
+    width: 70%;
     padding-right: 0px;
 }}
 .solution-point {{
@@ -185,7 +182,7 @@ h1.solution-title {{
     margin-right: 20px;
 }}
 .solution-image {{
-    width: 150%; 
+    width: 150%;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     padding-right: 200px;
@@ -268,7 +265,7 @@ div[data-testid="stHorizontalBlock"] {{
     align-items: center;
     justify-content: center;
     text-align: center;
-    filter: drop-shadow (3px 3px 3px rgba(1 1 1 1));
+    filter: drop-shadow(3px 3px 3px rgba(1,1,1,1));
 }}
 .stButton>button:hover {{
     background: #FADB49;
@@ -292,12 +289,12 @@ div[data-testid="column"] {{
 }}
 .row-offset {{
     position: relative;
-    left: 55px; /* Offset odd rows to create honeycomb pattern */
+    left: 55px;
 }}
-.row-container {{    
-    margin-bottom: -60px !important; /* Pull rows closer together */
+.row-container {{
+    margin-bottom: -60px !important;
 }}
-.hexagon-text {{ 
+.hexagon-text {{
     max-width: 90%;
     text-align: center;
 }}
@@ -310,9 +307,7 @@ div[data-testid="column"] {{
 </div>
 """, unsafe_allow_html=True)
 
-
-
-# Main page (unchanged)
+# Main page
 def main_page():
     st.markdown("""
         <p style="font-size: 2.5em; color: #333; text-align: center;">
@@ -418,12 +413,9 @@ def assortment_analytics_page():
         """, unsafe_allow_html=True)
 
     with col2:
-        # Path to the assortment-analytics folder
         solution_folder = "images/assortment-analytics"
-        # Get list of image files in the folder
         image_files = [f for f in os.listdir(solution_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
         
-        # Create carousel items dynamically
         test_items = [
             dict(
                 title="",
@@ -433,7 +425,6 @@ def assortment_analytics_page():
             ) for img_file in image_files
         ]
         
-        # Display carousel if there are images, otherwise show a placeholder
         if test_items:
             carousel(items=test_items)
         else:
@@ -470,14 +461,13 @@ def competitive_intelligence_page():
                 <span class="solution-number">03</span>
                 <div class="solution-content">
                     <h3>VALUE</h3>
-                    <p>Our solution, combining advanced web scraping with a proactive alerting mechanism, delivers unparalleled value in competitive intelligence. By providing comprehensive insights into market analyses, including competitive brands and products, it empowers informed decision-making. The alerting mechanism ensures timely notifications of market changes, enabling prompt strategic adjustments. This enhances accuracy in  in positioning products and brands, supports competitiveness, and maximizes market share, driving sustained business success through strategic agility and market responsiveness.</p>
+                    <p>Our solution, combining advanced web scraping with a proactive alerting mechanism, delivers unparalleled value in competitive intelligence. By providing comprehensive insights into market analyses, including competitive brands and products, it empowers informed decision-making. The alerting mechanism ensures timely notifications of market changes, enabling prompt strategic adjustments. This enhances accuracy in positioning products and brands, supports competitiveness, and maximizes market share, driving sustained business success through strategic agility and market responsiveness.</p>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
-        # Path to the competitive-intelligence folder
         solution_folder = "images/competitive-intelligence"
         image_files = [f for f in os.listdir(solution_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
         
@@ -894,7 +884,6 @@ def markdown_optimization_page():
         else:
             st.write("No images found in images/markdown-optimization folder.")
 
-        # Add the video below the carousel
         video_path = "MDO-Demo-20250302_171805-MeetingRecording.mp4"
         try:
             st.video(video_path)
