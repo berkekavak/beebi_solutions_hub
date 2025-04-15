@@ -72,23 +72,23 @@ body, html, * {{
     padding: 10px 20px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Center the entire header content */
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     height: 60px;
 }}
 .fixed-header .logo-container {{
-    position: absolute;
+    position: absolute; /* Center the logo absolutely within the header */
     left: 50%;
     transform: translateX(-50%);
     z-index: 1001;
 }}
 .fixed-header .logo-container img {{
-    height: 50px;
+    height: 50px; /* Adjust the height of the logo image */
     vertical-align: middle;
 }}
 .fixed-header .header-title-container {{
-    position: absolute;
-    top: 50px;
+    position: absolute; /* Position the title below the logo */
+    top: 50px; /* Adjust based on header height and logo size */
     left: 50%;
     transform: translateX(-50%);
     width: 100%;
@@ -105,10 +105,10 @@ body, html, * {{
 }}
 /* Adjust the app padding to account for the header */
 .stApp {{
-    padding-top: 100px;
+    padding-top: 100px; /* Increased padding to account for header and title */
     background-color: #f7f9fe;
 }}
-/* Center the main page title */
+/* Center the main page title (Streamlit's default title) */
 div[data-testid="stMarkdownContainer"] h1:not(.solution-title),
 div[data-testid="stMarkdownContainer"] h2:not(.solution-title) {{
     font-family: 'Poppins', Arial, sans-serif !important;
@@ -117,18 +117,19 @@ div[data-testid="stMarkdownContainer"] h2:not(.solution-title) {{
     text-align: center !important;
     width: 100%;
 }}
-/* Ensure all markdown text uses Poppins */
+/* Ensure all markdown text (body text) uses Poppins and has readable color */
 div[data-testid="stMarkdownContainer"] p,
 div[data-testid="stMarkdownContainer"] {{
     font-family: 'Poppins', Arial, sans-serif !important;
     color: #333333;
 }}
+/* Ensure solution page body text uses Poppins and has readable color */
 .solution-content p {{
     font-family: 'Poppins', Arial, sans-serif !important;
     font-size: 1em;
     color: #333333;
     line-height: 1.6;
-    margin: 20px 0 0 0;
+    margin: 20 0 0 0px;
     width: 130%;
 }}
 .solution-content h3 {{
@@ -160,7 +161,7 @@ h1.solution-title {{
     max-width: 1024px;
 }}
 .solution-text {{
-    width: 70%;
+    width: 70%; 
     padding-right: 0px;
 }}
 .solution-point {{
@@ -175,7 +176,7 @@ h1.solution-title {{
     margin-right: 20px;
 }}
 .solution-image {{
-    width: 150%;
+    width: 150%; 
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     padding-right: 200px;
@@ -246,10 +247,11 @@ div[data-testid="stHorizontalBlock"] {{
 .stButton>button {{
     width: 200px;
     height: 200px;
-    background: linear-gradient(145deg, #ffffff 0%, #f7f9fe 100%);
+    background: #FADB49;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     padding: 0px;
     margin: -10px -10px !important;
+    opacity: 0.75;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.05), inset 0 -2px 5px rgba(0,0,0,0.05);
     border: 0px solid rgba(0,0,0,0.1);
     transition: all 0.3s ease;
@@ -258,7 +260,7 @@ div[data-testid="stHorizontalBlock"] {{
     align-items: center;
     justify-content: center;
     text-align: center;
-    filter: drop-shadow(3px 3px 3px rgba(1,1,1,1));
+    filter: drop-shadow (3px 3px 3px rgba(1 1 1 1));
 }}
 .stButton>button:hover {{
     background: #FADB49;
@@ -282,12 +284,12 @@ div[data-testid="column"] {{
 }}
 .row-offset {{
     position: relative;
-    left: 55px;
+    left: 55px; /* Offset odd rows to create honeycomb pattern */
 }}
-.row-container {{
-    margin-bottom: -60px !important;
+.row-container {{    
+    margin-bottom: -60px !important; /* Pull rows closer together */
 }}
-.hexagon-text {{
+.hexagon-text {{ 
     max-width: 90%;
     text-align: center;
 }}
@@ -299,6 +301,7 @@ div[data-testid="column"] {{
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 # Main page
 def main_page():
@@ -322,11 +325,11 @@ def main_page():
         {"id": "assortment-analytics", "title": "Assortment Analytics", "link": "assortment_analytics"},
         {"id": "demand-prediction", "title": "Demand Prediction", "link": "demand_prediction"},
         {"id": "price-elasticity", "title": "Price Elasticity", "link": "price_elasticity"},
-        {"id": "material-product-lifecycle", "title": "Material/Product Lifecycle", "link": "material_product_lifecycle"},
+        {"id": "material-product-lifecycle", "title": "MLM / PLM Reporting", "link": "material_product_lifecycle"},
         {"id": "inventory-flow-optimization", "title": "Inventory Flow Efficiency", "link": "inventory_flow_optimization"},
         {"id": "competitive-intelligence", "title": "Competitive Intelligence", "link": "competitive_intelligence"},
         {"id": "markdown-optimization", "title": "Markdown Optimization", "link": "markdown_optimization"},
-        {"id": "data-sourcing", "title": "Data Readiness Status", "link": "data_sourcing"},
+        {"id": "data-sourcing", "title": "Pre-production Readiness", "link": "data_sourcing"},
         {"id": "image-attribute-prediction", "title": "Image Extraction & Prediction", "link": "image_attribute_prediction"},
         {"id": "football-player-recommender", "title": "Player Recommender", "link": "football_player_recommender"},
         {"id": "topic-summarization", "title": "Topic Summarization & Grouping", "link": "topic_summarization"},
