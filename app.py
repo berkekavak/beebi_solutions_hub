@@ -317,7 +317,7 @@ def main_page():
     """, unsafe_allow_html=True)
 
     st.markdown("""
-        <p style="font-size: 1.2em; color: #333; text-align: center;">
+        <p style="font-size: 1.2em; color: #333; text-align: center; margin-bottom: 50px;">
             Discover BeeBI’s innovative <strong>AI</strong> and <strong>data solutions</strong> through interactive demos and detailed descriptions, showcasing the power of our <strong>technology</strong>. Learn more about our offerings at <a href="https://www.beebi-consulting.com/" target="_blank">BeeBI Consulting</a>.
         </p>
     """, unsafe_allow_html=True)
