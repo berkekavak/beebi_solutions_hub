@@ -10,6 +10,27 @@ from ultralytics import YOLO
 from pptx import Presentation
 from streamlit_carousel import carousel
 import base64
+import ctypes
+
+# Diagnostic: Check for libGL.so.1
+try:
+    ctypes.CDLL("libGL.so.1")
+    st.write("libGL.so.1 found successfully!")
+except OSError as e:
+    st.error(f"Failed to load libGL.so.1: {e}")
+
+# Load CLIP model and processor
+try:
+    from transformers import CLIPProcessor, CLIPModel
+    @st.cache_resource
+    def load_clip_model():
+        model = CLIPModel.from_pretrained("openai/clip-vit-base-patch32")
+        processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
+        return model, processor
+    clip_model, clip_processor = load_clip_model()
+except Exception as e:
+    st.error(f"Failed to load CLIP model: {e}")
+    clip_model, clip_processor = None, None
 
 # Function to convert image to base64
 def get_base64_image(image_path):
