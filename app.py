@@ -1111,20 +1111,6 @@ def topic_summarization_page():
         st.session_state.page = "main"
         st.rerun()
 
-    st.write("Summarize key topics and group related content using Generative AI to analyze and organize large volumes of text efficiently.")
-
-    text_input = st.text_area("Enter text to summarize and group:", height=200)
-    
-    if st.button("Summarize and Group"):
-        with st.spinner("Processing text..."):
-            if text_input:
-                st.write("**Summary:**")
-                st.write("This is a mock summary of the input text.")
-                st.write("**Grouped Topics:**")
-                st.write("- Topic 1: General theme of the text")
-                st.write("- Topic 2: Secondary theme identified")
-            else:
-                st.write("Please enter some text to process.")
 
 # Main app logic to handle navigation
 if "page" not in st.session_state:
