@@ -11,6 +11,7 @@ from pptx import Presentation
 from streamlit_carousel import carousel
 import base64
 import ctypes
+import uuid
 
 # Set page config as the first Streamlit command
 st.set_page_config(layout="wide")
@@ -417,7 +418,7 @@ def assortment_analytics_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -472,7 +473,7 @@ def competitive_intelligence_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -527,7 +528,7 @@ def data_sourcing_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -582,7 +583,7 @@ def demand_prediction_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -637,7 +638,7 @@ def football_player_recommender_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -694,7 +695,7 @@ def image_attribute_prediction_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -816,7 +817,7 @@ def inventory_flow_optimization_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -833,7 +834,7 @@ def inventory_flow_optimization_page():
 def markdown_optimization_page():
     st.markdown('<h1 class="solution-title">Markdown Optimization</h1>', unsafe_allow_html=True)
 
-    col1, col2 = st.columns([1.2, 1])
+    col1, col2 = st.columns([1.2, 1], vertical_alignment="center")
     
     with col1:
         st.markdown("""
@@ -863,23 +864,6 @@ def markdown_optimization_page():
         """, unsafe_allow_html=True)
 
     with col2:
-        solution_folder = "images/markdown-optimization"
-        image_files = [f for f in os.listdir(solution_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
-        
-        test_items = [
-            dict(
-                title="",
-                text="",
-                img=os.path.join(solution_folder, img_file),
-                link=""
-            ) for img_file in image_files
-        ]
-        
-        if test_items:
-            carousel(items=test_items)
-        else:
-            st.write("No images found in images/markdown-optimization folder.")
-
         video_path = "MDO-Demo-20250302_171805-MeetingRecording.mp4"
         try:
             st.video(video_path)
@@ -893,10 +877,11 @@ def markdown_optimization_page():
 
 # Material/Product Lifecycle Management page
 def material_product_lifecycle_page():
+
     st.markdown('<h1 class="solution-title">Material/Product Lifecycle Management</h1>', unsafe_allow_html=True)
 
     col1, col2 = st.columns([1.2, 1], vertical_alignment="center")
-    
+
     with col1:
         st.markdown("""
         <div class="solution-text">
@@ -927,24 +912,69 @@ def material_product_lifecycle_page():
     with col2:
         solution_folder = "images/material-product-lifecycle"
         image_files = [f for f in os.listdir(solution_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp'))]
-        
+
         test_items = [
             dict(
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
-        
+
         if test_items:
             carousel(items=test_items)
         else:
             st.write("No images found in images/material-product-lifecycle folder.")
 
+    # Fullscreen overlay when an image is clicked
+    query_params = st.query_params
+    if "show_image" in query_params:
+        image_name = query_params["show_image"]
+        image_path = os.path.join("images/material-product-lifecycle", image_name)
+        if os.path.exists(image_path):
+            st.markdown(f"""
+                <style>
+                    .fullscreen-img {{
+                        position: fixed;
+                        top: 0;
+                        left: 0;
+                        width: 100vw;
+                        height: 100vh;
+                        background-color: rgba(0, 0, 0, 0.95);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        z-index: 9999;
+                    }}
+                    .fullscreen-img img {{
+                        max-width: 90%;
+                        max-height: 90%;
+                        border-radius: 10px;
+                        box-shadow: 0 0 20px rgba(255,255,255,0.3);
+                    }}
+                    .fullscreen-img .close-btn {{
+                        position: absolute;
+                        top: 30px;
+                        right: 30px;
+                        font-size: 30px;
+                        color: white;
+                        cursor: pointer;
+                        text-decoration: none;
+                    }}
+                </style>
+                <div class="fullscreen-img">
+                    <a class="close-btn" href="?">&times;</a>
+                    <img src="{image_path}" />
+                </div>
+            """, unsafe_allow_html=True)
+
     if st.button("Back to BeeBI Solution Hub"):
         st.session_state.page = "main"
         st.rerun()
+
+
+
 
 # Price Elasticity page
 def price_elasticity_page():
@@ -988,7 +1018,7 @@ def price_elasticity_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -1043,7 +1073,7 @@ def product_article_analyzer_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
@@ -1098,7 +1128,7 @@ def topic_summarization_page():
                 title="",
                 text="",
                 img=os.path.join(solution_folder, img_file),
-                link=""
+                link=None
             ) for img_file in image_files
         ]
         
