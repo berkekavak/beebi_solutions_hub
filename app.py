@@ -239,19 +239,27 @@ h1.solution-title {{
     justify-content: center;
     align-items: center;
     margin-bottom: -80px !important;
+    width: 100%; /* Ensure the row takes full width of the container */
 }}
 div[data-testid="stHorizontalBlock"] {{
     gap: 0px !important;
     display: flex;
     justify-content: center;
 }}
+.stButton {{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure the button container takes the full width of the column */
+}}
+
 .stButton>button {{
     width: 200px;
     height: 200px;
     background: #FADB49;
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     padding: 0px;
-    margin: -10px -10px !important;
+    margin: 0px !important; /* Changed from -10px -10px to 0px */
     opacity: 0.75;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.05), inset 0 -2px 5px rgba(0,0,0,0.05);
     border: 0px solid rgba(0,0,0,0.1);
@@ -261,7 +269,7 @@ div[data-testid="stHorizontalBlock"] {{
     align-items: center;
     justify-content: center;
     text-align: center;
-    filter: drop-shadow (3px 3px 3px rgba(1 1 1 1));
+    filter: drop-shadow(3px 3px 3px rgba(1 1 1 1));
 }}
 .stButton>button:hover {{
     background: #FADB49;
@@ -339,7 +347,7 @@ def main_page():
 
     with st.spinner("Loading Use Cases..."):
         # Row 1: 3 hexagons
-        row1 = st.columns([1, 1, 1, 1, 1])
+        row1 = st.columns([1, 1, 1, 1, 1], vertical_alignment="center")
         for i in range(3):
             with row1[i + 1]:
                 solution = solutions[i]
@@ -348,7 +356,7 @@ def main_page():
                     st.rerun()
 
         # Row 2: 4 hexagons
-        row2 = st.columns([1, 1, 1, 1])
+        row2 = st.columns([1, 1, 1, 1], vertical_alignment="center")
         for i in range(4):
             with row2[i]:
                 solution = solutions[i + 3]
@@ -357,7 +365,7 @@ def main_page():
                     st.rerun()
 
         # Row 3: 3 hexagons
-        row3 = st.columns([1, 1, 1, 1, 1])
+        row3 = st.columns([1, 1, 1, 1, 1], vertical_alignment="center")
         for i in range(3):
             with row3[i + 1]:
                 solution = solutions[i + 7]
@@ -366,7 +374,7 @@ def main_page():
                     st.rerun()
 
         # Row 4: 2 hexagons
-        row4 = st.columns([1, 1, 1, 1])
+        row4 = st.columns([1, 1, 1, 1], vertical_alignment="center")
         for i in range(2):
             with row4[i + 1]:
                 solution = solutions[i + 10]
@@ -375,6 +383,8 @@ def main_page():
                     st.rerun()
 
     st.markdown("</div>", unsafe_allow_html=True)
+
+
 
 # Assortment Analytics page
 def assortment_analytics_page():
